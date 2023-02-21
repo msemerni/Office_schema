@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Cherrystone_Converter</title>
+        <!-- Written by Mykhailo Semernin -->
+    <style>
+            #mainLabel{
+                margin-left: 220px;
+            }
+            #initialText{
+                background-color: #ddd;
+                margin: 10px;
+                float: left;
+                height: 500px;
+                width: 360px;
+            }
+            #resultText{
+                background-color: #eee;
+                margin: 10px;
+                float: left;
+                height: 500px;
+                width: 360px;
+            }
+            #convertButton{
+                background-color: rgb(55, 171, 224);
+                height: 40px;
+                border-radius: 15px;
+            }
+            #copyTextButton{
+                background-color: rgb(53, 231, 97);
+                margin-left: 14px;
+                height: 40px;
+                border-radius: 15px;
+            }
+            #clearTextButton{
+                background-color: rgb(233, 72, 43);
+                height: 30px;
+                margin-left: 7px;
+                margin-top: 150px;
+                border-radius: 15px;
+            }
+            #myDiv{
+                  float: left;
+                margin-top: 220px;
+            }
+            /* #myfooter{
+                float: left;
+                margin-bottom: 10px;
+            } */
+    </style>
+    </head>
+
+    <body>
+            <label id="mainLabel">Конвертер .kml / .geojson / google map address в формат Аналитики</label>
+            <p></p>
+            <textarea id="initialText" placeholder="Начальные данные" onchange="processFiles(this.files)"></textarea></textarea>
+            <div id="myDiv">
+            <button id="convertButton" onclick="printTextToResult()">Сделать хорошо</button>
+            <p></p>
+            <button id="copyTextButton" onclick="copyResultText()">Продолжить</button>
+            <p></p>
+            <button id="clearTextButton" onclick="clearAllText()">Начать заново</button>
+            </div>
+            <textarea name="resultText" id="resultText" placeholder="Результат"></textarea>
+    </body>
+    <!-- <footer>
+        <div id="myfooter">
+            <label>MV</label>
+        </div>
+    </footer> -->
+
+        <!-- Drag and Drop - start -->
+        <script>
+            window.onload = function() {
+            initialText = document.getElementById("initialText");
+            initialText.ondragenter = ignoreDrag;
+            initialText.ondragover = ignoreDrag;
+            initialText.ondrop = drop;
+          }
+          function ignoreDrag(e) {
+            // Обеспечиваем, чтобы никто другой не получил это событие, 
+            // т.к. мы выполняем операцию перетаскивания
+            e.stopPropagation();
+            e.preventDefault();
+            }
+            function drop(e) {
+            // Аннулируем это событие для всех других
+            e.stopPropagation();
+            e.preventDefault();
+        
+            // Получаем перемещенные файлы
+            var data = e.dataTransfer;
+            var files = data.files;
+            
+            // Передаем полученный файл функции для обработки файлов
+            processFiles(files);
+            }
+            function processFiles(files) {
+            var file = files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Выводим изображение на initialText
+                var output = document.getElementById("initialText");   
+                output.textContent = e.target.result;
+            };
+            // Начинаем считывать текстовый файл
+            reader.readAsText(file);
+            }
+        </script> 
+        <!-- Drag and Drop - end -->
+
+        <script>
+            function printTextToResult() {
+            var initText = document.querySelector("textarea").value;
+            var output = document.getElementById("resultText");
+            isAddress = false;
+                //// для .geojson:
+            if (initText.includes("\"coordinates\"")){    
+            initText = initText.replace(/\s+/g, ''); //удалить все пробелы    g-везде
+            initText = initText.replace(/,0.0|,0/g, ''); // удалить ,0 и ,0.0   g-везде
+            var firstPos = initText.indexOf("[[[");
+            var lastPos = initText.lastIndexOf("]]]") + 3;
+            var cuttedText = initText.substring(firstPos, lastPos);
+                if (initText.includes("\"Polygon\"")){
+                    output.innerHTML = "{'coordinates': " + cuttedText + ",'type': 'Polygon'}";
+                }
+                else if (initText.includes("\"MultiPolygon\"")){
+                    output.innerHTML = "{'coordinates': " + cuttedText + ",'type': 'MultiPolygon'}";
+                }
+                else{ 
+                alert("Произошло что-то непонятное с .GeoJSON :/\nОбратитесь к Мише С.")
+                }
+            }
+                //// для .kml:
+            else if (initText.includes("<coordinates>")){    
+            initText = initText.replace(/\s+/g, ""); //удалить все пробелы    g-везде
+            initText = initText.replace(/,0.0|,0/g, "],["); // удалить ,0 и ,0.0    g-везде
+            var firstPos = initText.indexOf("<coordinates>") + 13;
+            var lastPos = initText.lastIndexOf("</coordinates>");
+            var cuttedText = initText.substring(firstPos, lastPos);
+                if (initText.includes("<Polygon>")){
+            cuttedText = "{'coordinates': [[[" + cuttedText + "]]],'type': 'Polygon'}";
+                }
+                else if (initText.includes("<MultiPolygon>")){
+            cuttedText = "{'coordinates': [[[" + cuttedText + "]]],'type': 'MultiPolygon'}";
+                }
+                else{ 
+                alert("Произошло что-то непонятное c .KML :/\nОбратитесь к Мише С.")
+                }
+            cuttedText = cuttedText.replace(",[]","");
+            output.innerHTML = cuttedText;
+            }
+            else if (initText.length < 150){
+                try {
+                isAddress = true;
+                var addresArray = initText.split(",");
+                var street = addresArray[0].trim();
+                var city = addresArray[1].trim();
+                var stateAndPostal = addresArray[2].trim();
+                var state = stateAndPostal.replace(/[^a-zа-я]+/gi, "");
+                var postal = stateAndPostal.replace(/[^\d]+/g, "");
+                var country = addresArray[3].trim();
+                var cc = country.replace(/[^A-ZА-Я]+/g, "");
+                output.innerHTML = "{'cc': '" + cc + "',\n'city': '" + city + "',\n'country': '" + country + "',\n'formatted_address': '" + street + ", " + city + ", " + state + ", " + country + "',\n'formatted_city': '" + city + ", " + state + ", " + country + "',\n'postal_code': '" + postal + "',\n'state': '" + state + "',\n'street_address': '" + street + "'}";
+                } catch {
+                    alert("Неверный формат :(\nОбратитесь к Мише С.")
+                }
+            }
+            else{ 
+                alert("Что-то пошло не так :(\nОбратитесь к Мише С.")
+            }
+            }
+
+            function copyResultText() {
+            var copyText = document.getElementById("resultText");
+            copyText.select();
+            document.execCommand("copy");  
+            if (isAddress == false) {
+            var newWin = window.open("https://analytics.placer.team/admin/guru/complextasks/add/");
+            }
+            else{
+            var newWin = window.open("https://analytics.placer.team/admin/guru/complextasks/");
+            }
+            //newWin.document.write("<p>Некоторый текст</p>");
+            //     newWin.onload = function() {
+            //     console.log("foof");
+            //     var output2 = newWin.document.getElementById("wmd-input");
+            
+            // }
+            // output.innerHTML = "Отзыв";
+            //  newWin.onload = function() {
+            //     newWin.alert("fff");
+            // }
+            }    
+            
+            function clearAllText() {
+            window.location.reload();
+            }    
+        </script>
+</html>

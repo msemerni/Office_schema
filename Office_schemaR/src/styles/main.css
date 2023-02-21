@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.myHeader {
+  height: 80px;
+  width: 100%;
+  text-align: center;
+  background-color: rgb(75, 200, 209);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.myFooter {
+  height: 15px;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+  background-color: rgb(75, 200, 209);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#image-map {
+  /* height: 550px; */
+  border: 2px solid rgb(0, 0, 0);
+  height: calc(100vh - 119px);
+}
+
+.image-icon img {
+  height: 40px !important;
+  width: 40px !important;
+  border-radius: 50%;
+  border: solid;
+  border-color: rgb(75, 200, 209);
+}
+
+.marker {
+  /* overflow: hidden; */
+  /* border-radius: 50%; */
+	/* box-sizing: border-box; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+position: relative;
+}
+.marker::before{
+content:'';
+display: block;
+position: absolute;
+bottom: -8px;
+left: 50%;
+transform: translateX(-50%);
+width: 0;
+height: 0;
+border-left: 5px solid transparent;
+border-right: 5px solid transparent;
+border-top: 10px solid rgb(75, 200, 209);
+}
+.leaflet-div-icon{
+	background: transparent;
+	border:none;
+}
+.marker .marker-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+	margin: 1px;
+	padding: 0	;
+	border: 2px solid rgb(75, 200, 209);
+	border-radius: 50%;
+}
+
+.marker-pop-up-title {
+  font-weight: bold;
+  color: #84b819;
+}
+
+.marker-pop-up-url {
+  font-weight: bold;
+  color: #23c0ff;
+  text-decoration: none;
+}
+
+.marker-url:hover {
+  text-decoration: underline;
+}

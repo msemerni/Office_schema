@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Office_map</title>
+	<meta name="description" content="">
+	<meta name="keywords" content=" ">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/media.css">
+	<link rel="stylesheet" href="css/fonts.css">
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<header class="myHeader">
+	<p>My Header</p>
+	<form id="myForm" method="post" action="http://localhost:8080/login.php">
+		<input name="login"/>
+		<input type="submit" value="Войти" />
+	</form>
+</header>
+<body>
+<div class="bodyDiv">
+	<!-- <div class="mainDiv"> -->
+		<div class="map">
+		<svg id = "mySvg" viewBox="0 0 1000 408">
+			<a href="#">
+				<path class="part" d="m 621.57623,30.941884 h 279.1908 V 151.41676 l -282.83242,-2.40948 z" fill="#008080" description-data="<img src='media/bathroom.jpg'> Ванная комната">
+			</a>
+
+			<a href="#">
+				<path class="part" d="M 621.57624,30.941906 617.93462,149.00729 405.26358,148.64586 406.46615,29.592144 Z" fill="#808000" description-data="<img src='media/kitchen.jpg'> Кухня">
+			</a>
+
+			<a href="#">
+				<path class="part" d="m 406.46616,29.592144 -1.20258,119.053716 212.67104,0.36143 -1.02004,217.30257 -543.558265,-6.01281 -2.405124,-64.93838 -34.874314,-3.60767 3.607688,-180.38438 33.67175,-1.20257 1.202562,-82.976811 z" fill="#008000" description-data="<img src='media/bedroom.jpg'> Спальня">
+			</a>
+
+			<a href="#">
+				<path class="part" d="m 617.93462,149.00729 282.83243,2.40947 -0.0476,24.88824 h 39.68457 l -1.20257,105.82548 -39.08327,1.20257 -0.60126,81.77424 -282.60224,1.20257 z" fill="#bf2523" description-data="<img src='media/corridor.jpg'> Коридор">
+			</a>
+		</svg>
+
+			<div class="description">
+				
+			</div>
+
+			<img src="media/office_plan.jpg" alt="Office_plan">
+	    </div>
+	<!-- </div> -->
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.js"></script>
+<script src="js/main.js"></script>
+</body>
+
+<footer class=myFooter>
+		<a href="https://www.cherrystone.com.ua/" target="_blank">Cherrystone</a> © 2020<br/>
+</footer>
+</html>

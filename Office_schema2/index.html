@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Office_map</title>
+	<meta name="description" content="">
+	<meta name="keywords" content=" ">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/media.css">
+	<link rel="stylesheet" href="css/fonts.css">
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script src="js/fabric.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/jquery.mousewheel.min.js"></script>
+	<script src="js/jquery-3.4.1.js"></script>
+
+	
+	
+</head>
+<header class="myHeader">
+	<p>My Header</p>
+	<form id="myForm" method="post" action="http://localhost:8080/login.php">
+		<input name="login"/>
+		<input type="submit" value="Войти" />
+	</form>
+</header>
+<body>
+	<h1>Map sample</h1>
+
+<div><input type="checkbox" onclick="window.isEditing = this.checked" id="editing"/>
+<label for="editing">Editing</label></div>
+<div><input type="checkbox" onclick="window.isZoneEditing = this.checked" id="zoneediting"/>
+<label for="zoneediting">Draw zone</label></div>
+<div><input type="checkbox" onclick="window.isElevatorMarker = this.checked" id="elevatorediting"/>
+<label for="elevatorediting">Draw elevator marker</label></div>
+
+<div><input type="button" onclick="window.export()" value="Export"/></div>
+<div><input type="text" id="markersData" /></div>
+<div><input type="button" onclick="window.import()" value="Import"/></div>
+
+<canvas id="canvas" width="1000px" height="600px" style="border: 1px solid black">
+
+</body>
+
+<footer class=myFooter>
+		<a href="https://www.cherrystone.com.ua/" target="_blank">Cherrystone</a> © 2020<br/>
+</footer>
+</html>
